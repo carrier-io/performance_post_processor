@@ -4,9 +4,9 @@ from perfreporter.post_processor import PostProcessor
 
 def lambda_handler(event, context):
     try:
-        galloper_url, bucket, prefix, config_file = parse_event(event)
+        galloper_url, bucket, prefix, config_file, junit = parse_event(event)
         post_processor = PostProcessor(config_file)
-        post_processor.distributed_mode_post_processing(galloper_url, bucket, prefix)
+        post_processor.distributed_mode_post_processing(galloper_url, bucket, prefix, junit)
 
     except Exception as e:
         return {
@@ -28,5 +28,6 @@ def parse_event(_event):
     bucket = event.get('bucket')
     prefix = event.get('prefix')
     config_file = json.loads(event.get('config_file'))
+    junit = event.get('junit', False)
 
-    return galloper_url, bucket, prefix, config_file
+    return galloper_url, bucket, prefix, config_file, junit
