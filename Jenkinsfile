@@ -7,9 +7,9 @@ node {
       message = sh(returnStdout: true, script: "git log -1 HEAD --pretty=format:'%s'").trim()
     }
     stage('Zip') {
-      sh 'pip install -r requirements.txt'
-      sh 'zip -r post_processing.zip . -x Jenkinsfile -x package/* -x *.git* '
-      sh 'mv post_processing.zip package/post_processing.zip'
+      docker.image("greene1337/zipthis").inside {
+          sh "pip3 install -r requirements.txt -t . && zip -r post_processing.zip . -x Jenkinsfile -x package/* -x *.git* && mv post_processing.zip package/post_processing.zip && cd package && ls -la"
+      }
     }
     stage('Push') {
       if (message == "Auto Commit") {
@@ -27,5 +27,6 @@ node {
   }
   finally {
     cleanWs()
+    sh 'docker rmi greene1337/zipthis --force'
   }
 }
