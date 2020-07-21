@@ -17,7 +17,7 @@ node {
       }
       else {
         sshagent(['performance_post_processor']) {
-          sh 'git add . && git commit -m "Auto Commit" && git push origin master'
+          sh 'git add package/post_processing.zip && git commit -m "Auto Commit" && git push origin master'
         }
       }
     }
