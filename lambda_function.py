@@ -4,10 +4,11 @@ from perfreporter.post_processor import PostProcessor
 
 def lambda_handler(event=None, context=None):
     try:
-        galloper_url, project_id, bucket, prefix, config_file, junit, token, integration, email_recipients = parse_event(event)
+        galloper_url, project_id, bucket, prefix, config_file, junit, token,\
+        integration, email_recipients, report_id, influx_host = parse_event(event)
         post_processor = PostProcessor(config_file)
         post_processor.distributed_mode_post_processing(galloper_url, project_id, bucket, prefix, junit, token,
-                                                        integration, email_recipients)
+                                                        integration, email_recipients, report_id, influx_host)
 
     except Exception as e:
         return {
@@ -34,5 +35,8 @@ def parse_event(_event):
     integration = event.get('integration', [])
     token = event.get('token')
     email_recipients = event.get('email_recipients')
+    report_id = event.get('report_id')
+    influx_host = event.get('influx_host')
 
-    return galloper_url, project_id, bucket, prefix, config_file, junit, token, integration, email_recipients
+    return galloper_url, project_id, bucket, prefix, config_file, junit, token, integration, email_recipients,\
+           report_id, influx_host
