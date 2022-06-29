@@ -1,1 +1,2 @@
 git+https://github.com/carrier-io/perfreporter.git
+git+https://github.com/carrier-io/loki_logger.git
