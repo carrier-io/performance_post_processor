@@ -23,7 +23,6 @@ def lambda_handler(event=None, context=None):
 
 
 def parse_event(_event):
-
     # Galloper or AWS Lambda service
     event = _event if not _event.get('body') else json.loads(_event['body'])
 
@@ -33,7 +32,7 @@ def parse_event(_event):
     prefix = event.get('prefix')
     config_file = json.loads(event.get('config_file'))
     junit = event.get('junit', False)
-    integration = event.get('integration', [])
+    integration = event.get('integration', {})
     token = event.get('token')
     email_recipients = event.get('email_recipients')
     report_id = event.get('report_id')
